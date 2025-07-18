@@ -93,5 +93,4 @@ async def download_from_youtube(link: str, opts: dict) -> YTDlpInfo:
     result = await yt_dlp(opts, link)
     return YTDlpInfo(result['title'],
                      result['uploader'],
-                     result['requested_downloads'][0]['filepath']
-                     )
+                     result['requested_downloads'][0]['filepath'])

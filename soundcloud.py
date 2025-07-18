@@ -23,7 +23,7 @@ async def redirect(url: str) -> str:
         async with session.get(url) as response:
             return response.url or url
 
-@labeler.message(UrlRule("on.soundcloud.com", "soundcloud.com", "m.soundcloud.com"))
+@labeler.message(UrlRule("soundcloud.com"))
 async def soundcloud(message: Message):
     await _soundcloud(message, message.text)
 

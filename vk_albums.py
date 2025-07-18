@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from vkbottle import BaseUploader
 
 from music_resource import ABCResource
-from uploaders import AudioToUpload, UploadedAudio
-from userbots import user, album_cover_uploader, batch_audio_uploader
+from uploaders import UploadedAudio
+from userbots import user, album_cover_uploader
 
 
 @dataclass
