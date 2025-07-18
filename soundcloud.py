@@ -4,7 +4,7 @@ from typing import AnyStr, Optional, Union
 import aiohttp
 import sclib
 from sclib.asyncio import SoundcloudAPI, Track, Playlist
-from vkbottle import PhotoMessageUploader, Bot, ABCAPI, BaseUploader
+from vkbottle import PhotoMessageUploader, Bot, ABCAPI, BaseUploader, NotRule
 from vkbottle.bot import Message
 from vkbottle.dispatch.rules.base import RegexRule, AttachmentTypeRule, TextRule
 from vkbottle.framework.labeler import BotLabeler
@@ -23,11 +23,11 @@ async def redirect(url: str) -> str:
         async with session.get(url) as response:
             return response.url or url
 
-@labeler.message(UrlRule("soundcloud.com"))
+@labeler.message(UrlRule("soundcloud.com"), NotRule(AttachmentTypeRule("link")))
 async def soundcloud(message: Message):
     await _soundcloud(message, message.text)
 
-@labeler.message(RegexRule(r'Listen to .+ by .+ on #SoundCloud\s+(https?://\S+)'))
+@labeler.message(RegexRule(r'Listen to .+ by .+ on #SoundCloud\s+(https?://\S+)'), NotRule(AttachmentTypeRule("link")))
 async def soundcloud_re(message: Message, match: tuple[AnyStr]):
     await _soundcloud(message, match[0])
 

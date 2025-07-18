@@ -1,8 +1,9 @@
 import os
 from dataclasses import dataclass
 from urllib.parse import ParseResult
-from vkbottle import Keyboard, Callback
+from vkbottle import Keyboard, Callback, NotRule
 from vkbottle.bot import Message, MessageEvent
+from vkbottle.dispatch.rules.base import RegexRule, AttachmentTypeRule
 from vkbottle.framework.labeler import BotLabeler
 from vkbottle_types.events import GroupEventType
 
@@ -24,6 +25,7 @@ YT_DLP_AUDIO_OPTS = {
 YT_DLP_VIDEO_OPTS = {
         'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
 }
+YOUTUBE_REGEX = r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$"
 
 labeler = BotLabeler()
 
@@ -35,7 +37,7 @@ class YTDlpInfo:
     filepath: str
 
 
-@labeler.message(UrlRule("youtube.com", "youtu.be"))
+@labeler.message(UrlRule("youtube.com", "youtu.be"), NotRule(AttachmentTypeRule("link")))
 async def youtube(message: Message):
     keyboard = Keyboard(inline=True, one_time=False)
     keyboard.add(Callback("Аудио", {"type": "youtube_audio", "link": message.text}))
