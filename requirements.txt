@@ -1,0 +1,7 @@
+vkbottle==4.5.2
+vkbottle-types==5.199.99.4
+yt-dlp==2025.6.30
+soundcloud-lib
+aiohttp
+loguru
+python-dotenv
