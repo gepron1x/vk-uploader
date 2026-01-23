@@ -56,7 +56,7 @@ class BatchAudioUploader:
                     "audio.save",
                     {"artist": audio.artist, "title": audio.title, **uploader},
                 ))["response"]
-        return UploadedAudio(await self.uploader.get_owner_id(**audio), audio["id"], audio.read("access_key"))
+        return UploadedAudio(await self.uploader.get_owner_id(**audio), audio["id"], audio.get("access_key"))
 
 
 class AlbumCoverUploader(BaseUploader):
