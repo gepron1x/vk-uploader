@@ -4,6 +4,7 @@ from os import getenv
 from loguru import logger
 from vkbottle import Bot, User
 
+import bandcamp
 import config
 import soundcloud
 import youtube
@@ -15,5 +16,6 @@ bot = Bot(config.BOT_TOKEN)
 
 bot.on.load(youtube.labeler)
 bot.on.load(soundcloud.labeler)
+bot.on.load(bandcamp.labeler)
 
 bot.run_forever()
