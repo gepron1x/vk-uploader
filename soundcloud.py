@@ -1,4 +1,6 @@
 import asyncio
+import re
+from pprint import pprint
 from typing import AnyStr, Optional, Union
 
 import aiohttp
@@ -15,6 +17,16 @@ from music_resource import UrlResource, BytesResource
 from rules import UrlRule
 from uploaders import AudioToUpload, UploadedAudio
 from userbots import audio_uploader, user, batch_audio_uploader, album_cover_uploader
+
+def find_client_id(script_text):
+    """ Extract client_id from script """
+    client_id = re.findall(r'client_id\s*:\s*"([0-9a-zA-Z]{32})', script_text)
+    if len(client_id) > 0:
+        return client_id[0]
+
+    return False
+
+sclib.util.find_client_id = find_client_id # SOME MONKEY PATCHING // I HATE THIS
 
 labeler = BotLabeler()
 
@@ -33,7 +45,8 @@ async def soundcloud_re(message: Message, match: tuple[AnyStr]):
 
 async def _soundcloud(message: Message, url: str):
     api = SoundcloudAPI()
-    url = await redirect(url)
+    full_url = f"https://api-v2.soundcloud.com/resolve?url={url}&client_id={api.client_id}&app_version=1499347238"
+    print(full_url)
     obj = await api.resolve(url)
     if obj is None:
         await message.reply("По ссылке ничего не найдено.")
