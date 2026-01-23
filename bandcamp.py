@@ -69,7 +69,7 @@ async def upload_playlist(info: dict) -> str:
 
 
     album = await vk_albums.create_album(config.PLAYLIST_OWNER_ID, playlist_title)
-    await album.add_audio(audios)
+    await album.add_audio(audios[::-1])
     if thumbnail_url:
         await album.set_cover(UrlResource(thumbnail_url))
     return album.as_attachment()
