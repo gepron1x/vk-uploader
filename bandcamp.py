@@ -6,7 +6,6 @@ from vkbottle import NotRule, PhotoMessageUploader
 from vkbottle.bot import Message
 from vkbottle.dispatch.rules.base import AttachmentTypeRule
 from vkbottle.framework.labeler import BotLabeler
-from yt_dlp.extractor.common import _InfoDict
 
 import config
 import vk_albums
@@ -42,12 +41,12 @@ def map_entry_to_audio(entry) -> AudioToUpload:
                          file_source=UrlResource(download_url)
                          )
 
-async def upload_audio(info: _InfoDict):
+async def upload_audio(info: dict):
     audio = map_entry_to_audio(info)
     uploaded = await batch_audio_uploader.upload_single(audio)
     return uploaded.as_attachment()
 
-async def upload_thumbnail(info: _InfoDict, message: Message) -> Optional[str]:
+async def upload_thumbnail(info: dict, message: Message) -> Optional[str]:
     thumbnail = info.get('thumbnail')
     if not thumbnail:
         return None
@@ -59,7 +58,7 @@ async def upload_thumbnail(info: _InfoDict, message: Message) -> Optional[str]:
     return await photo_uploader.upload(data, peer_id=message.peer_id)
 
 
-async def upload_playlist(info: _InfoDict) -> str:
+async def upload_playlist(info: dict) -> str:
     playlist_title = info.get("title", "Untitled")
     entries = info.get("entries", [])
     thumbnail_url = entries[0].get("thumbnail", None) if entries else None
