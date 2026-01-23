@@ -45,8 +45,6 @@ async def soundcloud_re(message: Message, match: tuple[AnyStr]):
 
 async def _soundcloud(message: Message, url: str):
     api = SoundcloudAPI()
-    full_url = f"https://api-v2.soundcloud.com/resolve?url={url}&client_id={api.client_id}&app_version=1499347238"
-    print(full_url)
     obj = await api.resolve(url)
     if obj is None:
         await message.reply("По ссылке ничего не найдено.")
