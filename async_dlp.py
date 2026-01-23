@@ -9,7 +9,7 @@ async def yt_dlp(opts: dict, link: str, download=True) -> dict:
         _yt_dlp,
         opts,
         link,
-        download=download)
+        download)
 
 
 def _yt_dlp(opts: dict, link: str, download=True) -> dict:
