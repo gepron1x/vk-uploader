@@ -79,7 +79,7 @@ async def _youtube_video(link: str) -> str:
     try:
         attachment = await video_uploader.upload(file_source=info.filepath,
                                            name=info.title, description=f"Original: {link}\n"
-                                                                        f"Author: {info.author}"
+                                                                        f"Author: {info.author}\n"
                                                                         f"@objectwebasm",
                                            wallpost=True)
     finally:

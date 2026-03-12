@@ -45,6 +45,7 @@ async def soundcloud_re(message: Message, match: tuple[AnyStr]):
 
 async def _soundcloud(message: Message, url: str):
     api = SoundcloudAPI()
+    url = await redirect(url)
     obj = await api.resolve(url)
     if obj is None:
         await message.reply("По ссылке ничего не найдено.")
@@ -72,7 +73,7 @@ async def upload_soundcloud_track(track: Track) -> str:
 async def download_artwork(obj: Union[Track, Playlist]) -> Optional[bytes]:
     if not obj.artwork_url:
         return None
-    url = obj.artwork_url.replace('large', 't500x500')
+    url = obj.artwork_url.replace('large', 't1080x1080')
     return await sclib.asyncio.get_resource(url)
 
 async def upload_soundcloud_cover(track: Track, message: Message) -> Optional[str]:
