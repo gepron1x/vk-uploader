@@ -8,6 +8,7 @@ from vkbottle.framework.labeler import BotLabeler
 from vkbottle_types.events import GroupEventType
 
 from async_dlp import yt_dlp
+from errors import error_handler
 from rules import UrlRule
 from userbots import video_uploader, audio_uploader
 
@@ -38,6 +39,7 @@ class YTDlpInfo:
 
 
 @labeler.message(UrlRule("youtube.com", "youtu.be"), NotRule(AttachmentTypeRule("link")))
+@error_handler.catch
 async def youtube(message: Message):
     keyboard = Keyboard(inline=True, one_time=False)
     keyboard.add(Callback("Аудио", {"type": "youtube_audio", "link": message.text}))
@@ -46,6 +48,7 @@ async def youtube(message: Message):
 
 
 @labeler.raw_event(GroupEventType.MESSAGE_EVENT, MessageEvent)
+@error_handler.catch
 async def yt_keyboard(event: MessageEvent):
     payload = event.payload
     if "type" not in payload:

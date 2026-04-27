@@ -13,6 +13,7 @@ from vkbottle.framework.labeler import BotLabeler
 
 import config
 import vk_albums
+from errors import error_handler
 from music_resource import UrlResource, BytesResource
 from rules import UrlRule
 from uploaders import AudioToUpload, UploadedAudio
@@ -43,6 +44,7 @@ async def soundcloud(message: Message):
 async def soundcloud_re(message: Message, match: tuple[AnyStr]):
     await _soundcloud(message, match[0])
 
+@error_handler.catch
 async def _soundcloud(message: Message, url: str):
     api = SoundcloudAPI()
     url = await redirect(url)

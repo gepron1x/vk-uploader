@@ -10,6 +10,7 @@ from vkbottle.framework.labeler import BotLabeler
 import config
 import vk_albums
 from async_dlp import yt_dlp
+from errors import error_handler
 from music_resource import UrlResource
 from rules import UrlRule
 from uploaders import AudioToUpload
@@ -18,6 +19,7 @@ from userbots import batch_audio_uploader
 labeler = BotLabeler()
 
 @labeler.message(UrlRule("bandcamp.com"), NotRule(AttachmentTypeRule("link")))
+@error_handler.catch
 async def bandcamp(message: Message):
     url = message.text
     info = await yt_dlp({}, url, download=False)
