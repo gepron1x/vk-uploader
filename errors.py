@@ -6,7 +6,7 @@ error_handler = ErrorHandler(redirect_arguments=True)
 
 
 @error_handler.register_undefined_error_handler
-async def on_error(error: Exception, message: Message | MessageEvent, **args):
+async def on_error(error: Exception, message: Message | MessageEvent, *args, **kwargs):
     reply_text = "Ошибка. Убедись, что ссылка правильная. "\
                  "Возможно, бот не имеет "\
                  "доступ к ресурсу либо он совсем сломался.\n"\

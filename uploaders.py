@@ -46,6 +46,7 @@ class BatchAudioUploader:
                 uploaded_audio = await self.upload(audio, server)
             except VKAPIError[100] as e:
                 if "server is undefined" in str(e):
+                    await asyncio.sleep(random.randint(10, 20))
                     server = await self.uploader.get_server()
                     uploaded_audio = await self.upload(audio, server)
                 else:
