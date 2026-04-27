@@ -41,16 +41,19 @@ class BatchAudioUploader:
     async def upload_batch(self, audios: Iterable[AudioToUpload]) -> list[UploadedAudio]:
         server = await self.uploader.get_server()
         result = []
-        for audio in audios:
+        for idx, audio in enumerate(audios, 1):
+            print(f"Uploading track {idx}")
             try:
                 uploaded_audio = await self.upload(audio, server)
             except VKAPIError[100] as e:
                 if "server is undefined" in str(e):
+                    print("We got server undefined!")
                     await asyncio.sleep(random.randint(10, 20))
                     server = await self.uploader.get_server()
                     uploaded_audio = await self.upload(audio, server)
                 else:
                     raise e
+            print(f"Done track {idx}")
             result.append(uploaded_audio)
             await asyncio.sleep(random.randint(2, 5))
         return result
