@@ -1,3 +1,4 @@
+import asyncio
 import os
 from dataclasses import dataclass
 from urllib.parse import ParseResult
@@ -62,6 +63,7 @@ async def yt_keyboard(event: MessageEvent):
         attachment = await _youtube_audio(link)
     message = "Успешно загружено."
     if video:
+        await asyncio.sleep(5) # Sleeping helps!
         message += f"\nhttps://vk.com/{attachment}" # dirty hack, fuck vkontakte
     await event.send_message(message, attachment=attachment)
 
