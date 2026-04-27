@@ -86,12 +86,13 @@ async def upload_soundcloud_cover(track: Track, message: Message) -> Optional[st
     return await photo_uploader.upload(file_source, peer_id=message.peer_id)
 
 async def upload_soundcloud_playlist(playlist: Playlist) -> str:
-    album = await vk_albums.create_album(config.PLAYLIST_OWNER_ID, playlist.title)
+
     audio_to_upload = [AudioToUpload(UrlResource(await track.get_stream_url()),
                                              track.artist,
                                              track.title) for track in playlist.tracks]
     audio_to_upload.reverse()
     uploaded = await batch_audio_uploader.upload_batch(audio_to_upload)
+    album = await vk_albums.create_album(config.PLAYLIST_OWNER_ID, playlist.title)
     await album.add_audio(uploaded)
     art = await download_artwork(playlist)
     if not art and playlist.tracks:

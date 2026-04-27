@@ -1,4 +1,5 @@
 import asyncio
+import random
 from collections.abc import Iterable
 from dataclasses import dataclass
 from io import BytesIO
@@ -39,7 +40,12 @@ class BatchAudioUploader:
 
     async def upload_batch(self, audios: Iterable[AudioToUpload]) -> list[UploadedAudio]:
         server = await self.uploader.get_server()
-        return await asyncio.gather(*[self.upload(audio, server) for audio in audios])
+        result = []
+        for audio in audios:
+            uploaded_audio = await self.upload(audio, server)
+            result.append(uploaded_audio)
+            await asyncio.sleep(random.randint(2, 5))
+        return result
 
     async def get_server(self):
         return await self.uploader.get_server()
