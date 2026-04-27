@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from io import BytesIO
 from typing import Union, Optional
 
-from vkbottle import AudioUploader
+from vkbottle import AudioUploader, VKAPIError
 from vkbottle.tools.uploader.base import BaseUploader
 
 from music_resource import ABCResource
@@ -42,7 +42,14 @@ class BatchAudioUploader:
         server = await self.uploader.get_server()
         result = []
         for audio in audios:
-            uploaded_audio = await self.upload(audio, server)
+            try:
+                uploaded_audio = await self.upload(audio, server)
+            except VKAPIError[100] as e:
+                if "server is undefined" in str(e):
+                    server = await self.uploader.get_server()
+                    uploaded_audio = await self.upload(audio, server)
+                else:
+                    raise e
             result.append(uploaded_audio)
             await asyncio.sleep(random.randint(2, 5))
         return result
